@@ -1,6 +1,33 @@
 require "byebug"
+require_relative "Our_Queue.rb"
+module Searchable
+  def bfs(target)
+    return self if @value == target
+    queue = Our_Queue.new
+
+    queue.enqueue(self)
+
+    until queue.size == 0
+      current_node = queue.peek
+      #debugger
+      if current_node.value == target
+        return current_node
+      end
+      current_node.children.each do |child|
+        queue.enqueue(child)
+      end
+      queue.dequeue
+    end
+    nil
+  end
+
+  def dfs(target)
+    #return self
+  end
+end
 
 class PolyTreeNode
+  include Searchable
   attr_reader :parent, :children, :value
 
   def initialize(value)
