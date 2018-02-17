@@ -22,24 +22,38 @@ module Searchable
   end
 
   def dfs(target)
-    #return self
+    return self if @value == target
+    idx = 0
+    golden_child = nil
+    until  @children.all? { |child| child.visited? }
+      #debugger
+      #return @children[idx] if @children[idx].value == target
+      golden_child = @children[idx].dfs(target)
+      return golden_child if golden_child
+      @children[idx].visited = true
+      idx+=1
+    end
+
+    golden_child
   end
 end
 
 class PolyTreeNode
   include Searchable
   attr_reader :parent, :children, :value
+  attr_accessor :visited
 
   def initialize(value)
     #debugger
     @value = value
     @parent = nil
     @children = []
+    @visited = false
   end
 
-  # def parent
-  #   self.parent
-  # end
+  def visited?
+    @visited
+  end
 
   def parent=(node)
 
